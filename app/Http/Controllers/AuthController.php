@@ -22,31 +22,16 @@ class AuthController extends Controller
             ]);
             header('Content-Type: application/json');
             $body = $response->getBody()->getContents();
-            echo $body; die;
+            echo $body;
+            die;
         } catch (\GuzzleHttp\Exception\BadResponseException $ex) {
-            if ($ex->getCode() === 400) {
-                return response()->json(
-                    [
-                        'error' => 'Something went wrong on the server.',
-                        'ex' => $ex->getMessage(),
-                        'loginEndpoint' => $loginEndpoint
-                    ],
-                    500
-                );
-            } else if ($ex->getCode() === 401) {
-                return response()->json('Your credentials are incorrect. Please try again', $ex->getCode());
-            }
-            return response()->json(
-                [
-                    'error' => 'Something went wrong on the server.',
-                    'ex' => $ex->getMessage(),
-                ],
-                500
-            );
+            return response()->json([
+                'error_description' => 'Login Failed'
+            ], $ex->getCode());
         } catch (\GuzzleHttp\Exception\RequestException $ex) {
             return response()->json(
                 [
-                    'error' => 'Something went wrong on the server.',
+                    'error_description' => 'Something went wrong on the server.',
                     'ex' => $ex->getMessage(),
                     'loginEndpoint' => $loginEndpoint
                 ],
