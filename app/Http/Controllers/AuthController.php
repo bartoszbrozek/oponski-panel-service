@@ -20,10 +20,7 @@ class AuthController extends Controller
                     'password' => $request->password,
                 ]
             ]);
-            header('Content-Type: application/json');
-            $body = $response->getBody()->getContents();
-            echo $body;
-            die;
+            return $response->getBody();
         } catch (\GuzzleHttp\Exception\BadResponseException $ex) {
             return response()->json([
                 'error_description' => 'Login Failed'
